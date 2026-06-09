@@ -13,22 +13,27 @@ A desktop Pomodoro timer application built with Java and JavaFX.
 ## Prerequisites
 
 - Java 17+
-- JavaFX SDK
 
 ## Build & Run
 
-### Maven
+### Compile
 
 ```bash
 mvn clean compile
+```
+
+### Run the application
+
+```bash
 mvn javafx:run
 ```
 
-### Gradle
+This launches the Pomodoro Timer window. Use the **Start**, **Pause**, and **Reset** buttons to control the countdown.
+
+### Run tests
 
 ```bash
-./gradlew build
-./gradlew run
+mvn test
 ```
 
 ## How It Works
