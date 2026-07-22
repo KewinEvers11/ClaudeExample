@@ -2,6 +2,7 @@ package com.pomodoro.controller;
 
 import com.pomodoro.JavaFxTestBase;
 import com.pomodoro.model.PomodoroTimer;
+import com.pomodoro.model.SessionType;
 import com.pomodoro.model.TimerState;
 import com.pomodoro.view.TimerView;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,5 +76,23 @@ class TimerControllerTest extends JavaFxTestBase {
         view.getStartButton().fire();
         view.getResetButton().fire();
         assertEquals("Work", view.getSessionLabel().getText());
+    }
+
+    @Test
+    void skipButton_advancesSession() {
+        view.getSkipButton().fire();
+        assertEquals(SessionType.SHORT_BREAK, timer.getSessionType());
+    }
+
+    @Test
+    void skipButton_updatesSessionLabel() {
+        view.getSkipButton().fire();
+        assertEquals("Short Break", view.getSessionLabel().getText());
+    }
+
+    @Test
+    void skipButton_updatesTimerLabel() {
+        view.getSkipButton().fire();
+        assertEquals("05:00", view.getTimerLabel().getText());
     }
 }

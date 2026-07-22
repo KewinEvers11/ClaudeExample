@@ -17,6 +17,7 @@ public class TimerView {
     private final Button startButton;
     private final Button pauseButton;
     private final Button resetButton;
+    private final Button skipButton;
 
     public TimerView() {
         sessionLabel = new Label("Work");
@@ -31,8 +32,9 @@ public class TimerView {
         startButton = new Button("Start");
         pauseButton = new Button("Pause");
         resetButton = new Button("Reset");
+        skipButton = new Button("Skip");
 
-        HBox buttonBox = new HBox(10, startButton, pauseButton, resetButton);
+        HBox buttonBox = new HBox(10, startButton, pauseButton, resetButton, skipButton);
         buttonBox.setAlignment(Pos.CENTER);
 
         root = new VBox(20, sessionLabel, pomodoroCountLabel, timerLabel, buttonBox);
@@ -66,5 +68,9 @@ public class TimerView {
 
     public Button getResetButton() {
         return resetButton;
+    }
+
+    public Button getSkipButton() {
+        return skipButton;
     }
 }

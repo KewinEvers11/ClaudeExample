@@ -68,6 +68,7 @@ public class TimerController {
         view.getStartButton().setOnAction(e -> timer.start());
         view.getPauseButton().setOnAction(e -> timer.pause());
         view.getResetButton().setOnAction(e -> timer.reset());
+        view.getSkipButton().setOnAction(e -> timer.skip());
     }
 
     private String formatTime(int totalSeconds) {
