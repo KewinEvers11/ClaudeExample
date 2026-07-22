@@ -26,7 +26,12 @@ class PomodoroTimerTest {
 
     @Test
     void initialSessionType_isWork() {
-        assertEquals("Work", timer.getSessionType());
+        assertEquals(SessionType.WORK, timer.getSessionType());
+    }
+
+    @Test
+    void initialCompletedPomodoros_isZero() {
+        assertEquals(0, timer.getCompletedPomodoros());
     }
 
     @Test
@@ -57,7 +62,8 @@ class PomodoroTimerTest {
 
         assertEquals(TimerState.STOPPED, timer.getState());
         assertEquals(25 * 60, timer.getRemainingSeconds());
-        assertEquals("Work", timer.getSessionType());
+        assertEquals(SessionType.WORK, timer.getSessionType());
+        assertEquals(0, timer.getCompletedPomodoros());
     }
 
     @Test
@@ -84,17 +90,6 @@ class PomodoroTimerTest {
     }
 
     @Test
-    void tick_atZero_doesNotGoNegative() {
-        timer.start();
-        for (int i = 0; i < 25 * 60; i++) {
-            timer.tick();
-        }
-        assertEquals(0, timer.getRemainingSeconds());
-        timer.tick();
-        assertEquals(0, timer.getRemainingSeconds());
-    }
-
-    @Test
     void multipleTicks_decrementCorrectly() {
         timer.start();
         timer.tick();
@@ -113,5 +108,88 @@ class PomodoroTimerTest {
 
         assertEquals(TimerState.RUNNING, timer.getState());
         assertEquals(paused, timer.getRemainingSeconds());
+    }
+
+    @Test
+    void tick_atZero_duringWork_transitionsToShortBreak() {
+        timer.start();
+        tickTimes(25 * 60);
+
+        assertEquals(SessionType.SHORT_BREAK, timer.getSessionType());
+        assertEquals(5 * 60, timer.getRemainingSeconds());
+        assertEquals(TimerState.RUNNING, timer.getState());
+    }
+
+    @Test
+    void tick_atZero_duringWork_incrementsCompletedPomodoros() {
+        timer.start();
+        tickTimes(25 * 60);
+
+        assertEquals(1, timer.getCompletedPomodoros());
+    }
+
+    @Test
+    void tick_atZero_duringShortBreak_transitionsToWork() {
+        timer.start();
+        tickTimes(25 * 60);
+        tickTimes(5 * 60);
+
+        assertEquals(SessionType.WORK, timer.getSessionType());
+        assertEquals(25 * 60, timer.getRemainingSeconds());
+        assertEquals(TimerState.RUNNING, timer.getState());
+    }
+
+    @Test
+    void tick_afterFourthWork_transitionsToLongBreak() {
+        timer.start();
+        for (int i = 0; i < 3; i++) {
+            tickTimes(25 * 60);
+            tickTimes(5 * 60);
+        }
+        tickTimes(25 * 60);
+
+        assertEquals(SessionType.LONG_BREAK, timer.getSessionType());
+        assertEquals(15 * 60, timer.getRemainingSeconds());
+        assertEquals(4, timer.getCompletedPomodoros());
+    }
+
+    @Test
+    void tick_atZero_duringLongBreak_transitionsToWork() {
+        timer.start();
+        for (int i = 0; i < 3; i++) {
+            tickTimes(25 * 60);
+            tickTimes(5 * 60);
+        }
+        tickTimes(25 * 60);
+        tickTimes(15 * 60);
+
+        assertEquals(SessionType.WORK, timer.getSessionType());
+        assertEquals(25 * 60, timer.getRemainingSeconds());
+    }
+
+    @Test
+    void advanceSession_keepsStateRunning() {
+        timer.start();
+        tickTimes(25 * 60);
+
+        assertEquals(TimerState.RUNNING, timer.getState());
+    }
+
+    @Test
+    void reset_afterMultipleSessions_clearsCompletedPomodoros() {
+        timer.start();
+        tickTimes(25 * 60);
+        tickTimes(5 * 60);
+        tickTimes(25 * 60);
+        timer.reset();
+
+        assertEquals(0, timer.getCompletedPomodoros());
+        assertEquals(SessionType.WORK, timer.getSessionType());
+    }
+
+    private void tickTimes(int count) {
+        for (int i = 0; i < count; i++) {
+            timer.tick();
+        }
     }
 }

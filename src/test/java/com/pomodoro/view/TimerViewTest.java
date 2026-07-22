@@ -46,7 +46,12 @@ class TimerViewTest extends JavaFxTestBase {
     }
 
     @Test
-    void root_containsThreeChildren() {
-        assertEquals(3, view.getRoot().getChildren().size());
+    void root_containsFourChildren() {
+        assertEquals(4, view.getRoot().getChildren().size());
+    }
+
+    @Test
+    void pomodoroCountLabel_displaysInitialValue() {
+        assertEquals("Pomodoro 0/4", view.getPomodoroCountLabel().getText());
     }
 }
