@@ -54,4 +54,9 @@ class TimerViewTest extends JavaFxTestBase {
     void pomodoroCountLabel_displaysInitialValue() {
         assertEquals("Pomodoro 0/4", view.getPomodoroCountLabel().getText());
     }
+
+    @Test
+    void skipButton_hasCorrectText() {
+        assertEquals("Skip", view.getSkipButton().getText());
+    }
 }

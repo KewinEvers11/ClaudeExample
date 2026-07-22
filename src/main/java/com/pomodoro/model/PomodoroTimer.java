@@ -39,6 +39,10 @@ public class PomodoroTimer {
         completedPomodoros.set(0);
     }
 
+    public void skip() {
+        advanceSession();
+    }
+
     public void tick() {
         if (state.get() == TimerState.RUNNING && remainingSeconds.get() > 0) {
             remainingSeconds.set(remainingSeconds.get() - 1);
