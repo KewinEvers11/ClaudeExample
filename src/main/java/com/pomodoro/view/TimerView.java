@@ -13,6 +13,7 @@ public class TimerView {
     private final VBox root;
     private final Label timerLabel;
     private final Label sessionLabel;
+    private final Label pomodoroCountLabel;
     private final Button startButton;
     private final Button pauseButton;
     private final Button resetButton;
@@ -20,6 +21,9 @@ public class TimerView {
     public TimerView() {
         sessionLabel = new Label("Work");
         sessionLabel.setFont(new Font(20));
+
+        pomodoroCountLabel = new Label("Pomodoro 0/4");
+        pomodoroCountLabel.setFont(new Font(14));
 
         timerLabel = new Label("25:00");
         timerLabel.setFont(new Font(72));
@@ -31,7 +35,7 @@ public class TimerView {
         HBox buttonBox = new HBox(10, startButton, pauseButton, resetButton);
         buttonBox.setAlignment(Pos.CENTER);
 
-        root = new VBox(20, sessionLabel, timerLabel, buttonBox);
+        root = new VBox(20, sessionLabel, pomodoroCountLabel, timerLabel, buttonBox);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(40));
     }
@@ -46,6 +50,10 @@ public class TimerView {
 
     public Label getSessionLabel() {
         return sessionLabel;
+    }
+
+    public Label getPomodoroCountLabel() {
+        return pomodoroCountLabel;
     }
 
     public Button getStartButton() {
